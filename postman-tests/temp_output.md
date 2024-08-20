@@ -1,5 +1,5 @@
-The following lists test sections and the required resources for those sections. This file was generated using sot.sh at 2024-08-19 14:38:18
-/
+ The following lists test sections and the required resources for those sections. This file was generated on  date using sot.sh 
+ 
 ## CodeSystem 1 Shareable 
  https://hl7.org/fhir/R4/codesystem-request-intent.json 
  https://terminology.hl7.org/3.1.0/CodeSystem-v3-ActCode.json 
@@ -78,5 +78,3 @@ The following lists test sections and the required resources for those sections.
  http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.198.12.1005|20190315 
  http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.600.1.1499 
  http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.600.1.1499 
-## ValueSet 12 POST 
- http://tx.fhir.org/r4/ValueSet/2.16.840.1.113762.1.4.1110.69 

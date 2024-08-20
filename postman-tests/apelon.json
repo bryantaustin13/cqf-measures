@@ -3,19 +3,19 @@
 	"values": [
 		{
 			"key": "basicUser",
-			"value": "apikey",
+			"value": "baustin",
 			"type": "secret",
 			"enabled": true
 		},
 		{
 			"key": "basicPass",
-			"value": "2538a209-a2ae-46aa-9b9d-19c92dc01c30",
+			"value": "BA123!",
 			"type": "secret",
 			"enabled": true
 		},
 		{
 			"key": "SERVER_URL",
-			"value": "https://uat-cts.nlm.nih.gov/fhir/",
+			"value": "http://fhir.ext.apelon.com:7080/dtsserverws/fhir/",
 			"type": "default",
 			"enabled": true
 		},

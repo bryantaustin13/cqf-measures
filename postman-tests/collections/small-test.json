@@ -1,0 +1,124 @@
+{
+  "info": {
+    "_postman_id": "8cc76755-a8fa-4981-944a-e1f27b91dd38",
+    "name": "cqf-measures-terminology-service-tests",
+    "description": "This test suite validates capability described in the Quality Measure IG Measure Terminology Service:\n\n[https://build.fhir.org/ig/HL7/cqf-measures/measure-terminology-service.html](https://build.fhir.org/ig/HL7/cqf-measures/measure-terminology-service.html)\n\nSpecifically, there are test case folders for each section of the capability statement:\n\n- Code Systems (10.1.2: [https://build.fhir.org/ig/HL7/cqf-measures/measure-terminology-service.html#code-systems](https://build.fhir.org/ig/HL7/cqf-measures/measure-terminology-service.html#code-systems))\n    \n- Value Sets (10.1.3: [https://build.fhir.org/ig/HL7/cqf-measures/measure-terminology-service.html#value-sets](https://build.fhir.org/ig/HL7/cqf-measures/measure-terminology-service.html#value-sets))\n    \n- Quality Programs (10.1.4: [https://build.fhir.org/ig/HL7/cqf-measures/measure-terminology-service.html#quality-programs-artifact-collections](https://build.fhir.org/ig/HL7/cqf-measures/measure-terminology-service.html#quality-programs-artifact-collections))\n    \n- Server Operations (10.1.5: [https://build.fhir.org/ig/HL7/cqf-measures/measure-terminology-service.html#server-operations](https://build.fhir.org/ig/HL7/cqf-measures/measure-terminology-service.html#server-operations))\n    \n- Capability Statement (10.1.6: [https://build.fhir.org/ig/HL7/cqf-measures/measure-terminology-service.html#capability-statement](https://build.fhir.org/ig/HL7/cqf-measures/measure-terminology-service.html#capability-statement))\n    \n\nTests are named according to the requirement that they are testing. More documentation is available in the testing folders and individual test cases.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "269238"
+  },
+  "item": [
+    {
+      "name": "ValueSet 11.8 GET Expand With Multiple System Versions",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Based on source of truth: SOT@ http://tx.fhir.org/r4/ValueSet/2.16.840.1.113762.1.4.1110.69 @SOT",
+              "pm.test(\"Response status code is 200\", function () {\r",
+              "    pm.expect(pm.response.code).to.equal(200);\r",
+              "});\r",
+              "\r",
+              "// profile\r",
+              "pm.test(\"Computable profile is present in meta\", function () {\r",
+              "    const responseData = pm.response.json();\r",
+              "\r",
+              "    pm.expect(responseData.meta.profile).contains(\"http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/computable-valueset-cqfm\");\r",
+              "    if (pm.environment.get(\"VALUESET_DEBUG\") === true){",
+              "       console.log(responseData);",
+              "    }",
+              "});\r",
+              "\r",
+              "// url\r",
+              "pm.test(\"Resource url equal to http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1110.69\", function () {\r",
+              "    const responseData = pm.response.json();\r",
+              "\r",
+              "    pm.expect(responseData.url).equal(\"http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1110.69\");\r",
+              "});\r",
+              "\r",
+              "// version\r",
+              "// NOTE: This is based on latest as of this test date\r",
+              "pm.test(\"Version is 20230308\", function () {\r",
+              "    const responseData = pm.response.json();\r",
+              "\r",
+              "    pm.expect(responseData.version).to.equal(\"20230308\", \"Invalid version\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Expansion is present\", function () {\r",
+              "    const responseData = pm.response.json();\r",
+              "\r",
+              "    pm.expect(responseData.expansion).exist;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Code is present\", function() {\r",
+              "    const responseData = pm.response.json();\r",
+              "\r",
+              "    pm.expect(responseData.expansion.contains.find(function(obj) { return obj.system == \"http://hl7.org/fhir/sid/icd-10-cm\" && obj.code == \"Z3A.38\" })).exist;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"resourceType\" : \"Parameters\",\n  \"parameter\" : [\n    {\n    \"name\" : \"url\",\n    \"valueString\" : \"http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1047.611\"\n    },\n    {\n      \"name\" : \"code\",\n      \"valueString\" : \"420523002\"\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{SERVER_URL}}ValueSet/2.16.840.1.113762.1.4.1110.69/$expand",
+          "host": [
+            "{{SERVER_URL}}ValueSet"
+          ],
+          "path": [
+            "2.16.840.1.113762.1.4.1110.69",
+            "$expand"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "password",
+        "value": "{{basicPass}}",
+        "type": "string"
+      },
+      {
+        "key": "username",
+        "value": "{{basicUser}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.request.headers.add({key: 'Accept', value: 'application/fhir+json' })"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]}
