@@ -9105,7 +9105,225 @@
           "name": "Server 2 Batch Operations",
           "item": [
             {
-              "name": "Server 2 Batch CodeSystem Read",
+              "name": "Server 2.1 Batch CodeSystem Read",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "//SOT@## Server 2.1 Batch CodeSystem Read @SOT",
+                      "// Based on FHIR R4 source of truth: SOT@ https://hl7.org/fhir/R4/codesystem-request-intent.json and https://hl7.org/fhir/us/core/STU3.1.1/CodeSystem-condition-category.json @SOT",
+                      "",
+                      "pm.test(\"Response status code is 200\", function () {",
+                      "    pm.expect(pm.response.code).to.equal(200);",
+                      "});",
+                      "",
+                      "",
+                      "pm.test(\"Test that id is not empty\", function () {",
+                      "    const responseData = pm.response.json();",
+                      "",
+                      "    pm.expect(responseData.id).to.exist.and.to.not.be.empty;",
+                      "    if (pm.environment.get(\"SERVER_DEBUG\") === true){",
+                      "       console.log(responseData);",
+                      "    }",
+                      "});",
+                      "",
+                      "",
+                      "pm.test(\"Test that return resource is resourceType == Bundle.\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.resourceType).equals(\"Bundle\");",
+                      "",
+                      "});",
+                      "",
+                      "//This should consist of a bundle with 2 bundles, each containing a CodeSystem",
+                      "//Testing first batch entry returned",
+                      "pm.test(\"Test that first return Bundle's first entry is a Bundle\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[0].resource.resourceType).equals(\"Bundle\");",
+                      "",
+                      "});",
+                      "",
+                      "pm.test(\"Test that first return entry is a CodeSystem\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[0].resource.entry[0].resource.resourceType).equals(\"CodeSystem\");",
+                      "",
+                      "});",
+                      "",
+                      "pm.test(\"Test that the CodeSystem has an id of request-intent\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[0].resource.entry[0].resource.id).equals(\"request-intent\");",
+                      "",
+                      "});",
+                      "",
+                      "pm.test(\"Test that CodeSystem has a version of 4.0.1\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[0].resource.entry[0].resource.version).equals(\"4.0.1\");",
+                      "",
+                      "});",
+                      "",
+                      "//Testing second batch bundle entry returned",
+                      "pm.test(\"Test that the return Bundle's second entry is a Bundle\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[1].resource.resourceType).equals(\"Bundle\");",
+                      "",
+                      "});",
+                      "",
+                      "pm.test(\"Test that second return entry is a CodeSystem\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[1].resource.entry[0].resource.resourceType).equals(\"CodeSystem\");",
+                      "",
+                      "});",
+                      "",
+                      "pm.test(\"Test that CodeSystem has an id of condition-category\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[1].resource.entry[0].resource.id).equals(\"condition-category\");",
+                      "",
+                      "});",
+                      "",
+                      "pm.test(\"Test that the CodeSystem has a version of 3.1.1\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[1].resource.entry[0].resource.version).equals(\"3.1.1\");",
+                      "",
+                      "});",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"resourceType\": \"Bundle\", \"type\": \"batch\", \"entry\": [{\"request\": {\"method\": \"GET\", \"url\": \"CodeSystem/?url=http://hl7.org/fhir/request-intent&version=4.0.1\"}}, {\"request\": {\"method\": \"GET\", \"url\": \"CodeSystem/?url=http://hl7.org/fhir/us/core/CodeSystem/condition-category&version=3.1.1\"}}]}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{SERVER_URL}}?_format=json",
+                  "host": [
+                    "{{SERVER_URL}}?_format=json"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Server 2.2 Batch CodeSystem Search",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "//SOT@## Server 2.2 Batch CodeSystem Search @SOT",
+                      "// Based on FHIR R4 source of truth: SOT@ https://hl7.org/fhir/R4/codesystem-request-intent.json and https://hl7.org/fhir/us/core/STU3.1.1/CodeSystem-condition-category.json @SOT",
+                      "",
+                      "pm.test(\"Response status code is 200\", function () {",
+                      "    pm.expect(pm.response.code).to.equal(200);",
+                      "});",
+                      "",
+                      "",
+                      "pm.test(\"Test that id is not empty\", function () {",
+                      "    const responseData = pm.response.json();",
+                      "",
+                      "    pm.expect(responseData.id).to.exist.and.to.not.be.empty;",
+                      "    if (pm.environment.get(\"SERVER_DEBUG\") === true){",
+                      "       console.log(responseData);",
+                      "    }",
+                      "});",
+                      "",
+                      "",
+                      "pm.test(\"Test that return resource is resourceType == Bundle.\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.resourceType).equals(\"Bundle\");",
+                      "",
+                      "});",
+                      "",
+                      "pm.test(\"Test that first return Bundle's first entry is a Bundle\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[0].resource.resourceType).equals(\"Bundle\");",
+                      "",
+                      "});",
+                      "",
+                      "pm.test(\"Test that first return entry is a CodeSystem\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[0].resource.entry[0].resource.resourceType).equals(\"CodeSystem\");",
+                      "",
+                      "});",
+                      "",
+                      "pm.test(\"Test that the CodeSystem has an id of request-intent\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[0].resource.entry[0].resource.id).equals(\"request-intent\");",
+                      "",
+                      "});",
+                      "",
+                      "pm.test(\"Test that CodeSystem has a version of 4.0.1\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[0].resource.entry[0].resource.version).equals(\"4.0.1\");",
+                      "",
+                      "});",
+                      "",
+                      "pm.test(\"Test that the return Bundle's second entry is a Bundle\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[1].resource.resourceType).equals(\"Bundle\");",
+                      "",
+                      "});",
+                      "",
+                      "pm.test(\"Test that second return entry is a CodeSystem\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[1].resource.entry[0].resource.resourceType).equals(\"CodeSystem\");",
+                      "",
+                      "});",
+                      "",
+                      "pm.test(\"Test that CodeSystem has an id of condition-category\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[1].resource.entry[0].resource.id).equals(\"condition-category\");",
+                      "",
+                      "});",
+                      "",
+                      "pm.test(\"Test that the CodeSystem has a version of 3.1.1\", function (){",
+                      "    const responseData = pm.response.json();",
+                      "    pm.expect(responseData.entry[1].resource.entry[0].resource.version).equals(\"3.1.1\");",
+                      "",
+                      "});",
+                      ""                ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"resourceType\": \"Bundle\", \"type\": \"batch\", \"entry\": [{\"request\": {\"method\": \"GET\", \"url\": \"CodeSystem/?identifier=urn:oid:2.16.840.1.113883.4.642.4.114\"}}, {\"request\": {\"method\": \"GET\", \"url\": \"CodeSystem/?name=USCoreConditionCategoryExtensionCodes&version=3.1.1\"}}]}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{SERVER_URL}}?_format=json",
+                  "host": [
+                    "{{SERVER_URL}}?_format=json"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Server 2.6 Batch ValueSet ValidateCode",
               "event": [
                 {
                   "listen": "test",
